@@ -1,0 +1,50 @@
+---
+- name: Add an apt key for Nginx from a keyserver
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: ABF5BD827BD9BF62
+
+- name: Add repo for Nginx.
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - "{{ nginx_repo }}"
+
+
+- name: Install nginx.
+  apt:
+    name: "{{ nginx_package_name }}={{ nginx_package_version }}"
+    state: present
+  notify:
+    - restart nginx
+
+- name: Copy nginx configuration in place.
+  template:
+    src: "{{ nginx_conf_template }}"
+    dest: "{{ nginx_conf_file_path }}"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: Copy nginx custom configuratios.
+  template:
+    src: "../templates/{{ item }}"
+    dest: "{{ nginx_conf_path }}/{{ item | replace('.j2', '')  }}"  
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+  notify:
+    - validate nginx configuration
+    - reload nginx
+  with_items:
+    - "{{ nginx_conf }}"
+
+- name: Ensure nginx service is running as configured.
+  service:
+    name: nginx
+    state: "{{ nginx_service_state }}"
+    enabled: "{{ nginx_service_enabled }}"

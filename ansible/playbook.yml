@@ -48,6 +48,7 @@
       owner: root
       group: root
       mode: 0755
+    when: nginx_as_service == false
 
   - name: Copy docker-compose file from templates
     template:
@@ -58,6 +59,7 @@
     template:
       src: ../templates/front.conf.j2
       dest: /tmp/project/nginx_docker/front.conf
+    when: nginx_as_service == false
 
   - name: Run app and nginx
     community.docker.docker_compose:
@@ -67,3 +69,7 @@
   - name: Docker-compose logs
     ansible.builtin.debug:
       var: compose_logs
+
+  roles:
+    - role: ansible-role-loadbalancer
+      when: nginx_as_service == true

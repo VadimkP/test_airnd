@@ -11,6 +11,7 @@ services:
     environment:
       HelloMessage: {{ hello_message }}
 
+{% if nginx_as_service is false %}
   nginx_docker:
     build:
       dockerfile: ./nginx_docker/Dockerfile
@@ -20,3 +21,4 @@ services:
       - "{{ nginx_docker_port }}:80"
     volumes:
       - ./nginx_docker/front.conf:/etc/nginx/conf.d/front.conf
+{% endif %}

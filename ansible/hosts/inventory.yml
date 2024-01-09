@@ -3,8 +3,10 @@ tests_hosts:
     app_name: "test_app"
     app_port: "8080"
     hello_message: "Hello iac!"
+    nginx_as_service: true
+    nginx_conf: "front.conf.j2"
     nginx_docker_port: "81"
     nginx_docker_name: "nginx_docker"
   hosts:
     test:
-      ansible_ssh_host: localhost
+      ansible_ssh_host: 5.42.85.144
