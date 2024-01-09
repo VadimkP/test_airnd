@@ -9,4 +9,4 @@ tests_hosts:
     nginx_docker_name: "nginx_docker"
   hosts:
     test:
-      ansible_ssh_host: 5.42.85.144
+      ansible_ssh_host: localhost

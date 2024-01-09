@@ -22,8 +22,12 @@ server {
 	keepalive_requests 100;
 
    location / {
-        proxy_pass http://{{ app_name }}:{{ app_port }};
-        proxy_buffering             off;
+        {% if nginx_as_service is false %}
+    proxy_pass http://{{ app_name }}:{{ app_port }};
+        {% else %}
+    proxy_pass http://localhost:{{ app_port }};
+        {% endif %}
+    proxy_buffering             off;
         proxy_send_timeout          600;
         proxy_read_timeout          600;
         send_timeout                600;
