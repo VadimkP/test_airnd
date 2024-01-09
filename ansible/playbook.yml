@@ -1,0 +1,69 @@
+---
+- name: Run test app
+  become: yes
+  hosts: tests_hosts
+
+  tasks:
+  - name: Install packages
+    package:
+      name:
+        - docker-compose
+        - python3
+        - python3-pip
+      state: present
+
+  - name: Install docker-compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
+      dest: /usr/local/bin/docker-compose
+      mode: 'u+x,g+x'
+
+  - name: Pip install docker
+    pip:
+      name:
+        - "docker==6.1.3"
+        - docker-compose
+      state: latest
+
+  - name: Make project directory
+    file:
+      path: /tmp/project/
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Copy app directory
+    copy:
+      src: ../python/
+      dest: /tmp/project/python/
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Copy nginx directory
+    copy:
+      src: ../nginx_docker/
+      dest: /tmp/project/nginx_docker/
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Copy docker-compose file from templates
+    template:
+      src: ../templates/docker-compose.yaml.j2
+      dest: /tmp/project/docker-compose.yaml
+
+  - name: Copy front config for nginx from templates
+    template:
+      src: ../templates/front.conf.j2
+      dest: /tmp/project/nginx_docker/front.conf
+
+  - name: Run app and nginx
+    community.docker.docker_compose:
+      project_src: /tmp/project/
+    register: compose_logs
+
+  - name: Docker-compose logs
+    ansible.builtin.debug:
+      var: compose_logs

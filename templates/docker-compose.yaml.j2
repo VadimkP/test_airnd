@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+
+  test_app:
+    build:
+      dockerfile: ./python/Dockerfile
+      context: .
+    container_name: {{ app_name }}
+    ports:
+      - "{{ app_port }}:8080"
+    environment:
+      HelloMessage: {{ hello_message }}
+
+  nginx_docker:
+    build:
+      dockerfile: ./nginx_docker/Dockerfile
+      context: .
+    container_name: nginx
+    ports:
+      - "{{ nginx_docker_port }}:80"
+    volumes:
+      - ./nginx_docker/front.conf:/etc/nginx/conf.d/front.conf

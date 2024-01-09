@@ -1,0 +1,10 @@
+tests_hosts:
+  vars:
+    app_name: "test_app"
+    app_port: "8080"
+    hello_message: "Hello iac!"
+    nginx_docker_port: "81"
+    nginx_docker_name: "nginx_docker"
+  hosts:
+    test:
+      ansible_ssh_host: localhost
