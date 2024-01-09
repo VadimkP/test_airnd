@@ -10,26 +10,43 @@
 Дерево репо
 ```
 .
-├── ansible.cfg
-├── hosts
-│   └── inventory.yml
-├── playbook.yml
-└── roles
-    └── ansible-role-loadbalancer
-        ├── README.md
-        ├── defaults
-        │   └── main.yml
-        ├── files
-        ├── handlers
-        │   └── main.yml
-        ├── meta
-        │   └── main.yml
-        ├── tasks
-        │   └── main.yml
-        ├── templates
-        │   └── nginx.conf.j2
-        └── vars
-            └── main.yml
+├── README.md
+├── ansible
+│   ├── ansible.cfg
+│   ├── hosts
+│   │   └── inventory.yml
+│   ├── playbook.yml
+│   └── roles
+│       └── ansible-role-loadbalancer
+│           ├── README.md
+│           ├── defaults
+│           │   └── main.yml
+│           ├── files
+│           ├── handlers
+│           │   └── main.yml
+│           ├── meta
+│           │   └── main.yml
+│           ├── tasks
+│           │   └── main.yml
+│           ├── templates
+│           │   └── nginx.conf.j2
+│           └── vars
+│               └── main.yml
+├── img
+│   ├── screen_browser-80.png
+│   ├── screen_browser-81.png
+│   └── screen_cli.png
+├── nginx_docker
+│   ├── 00-jsonlog.conf
+│   ├── Dockerfile
+│   └── nginx.conf
+├── python
+│   ├── Dockerfile
+│   ├── app.py
+│   └── requirements.txt
+└── templates
+    ├── docker-compose.yaml.j2
+    └── front.conf.j2
 ```
 
 `ansible` - директория с конфигурацией ансибла, файлом с инвентарем и плейбуком по установке пакетов и запуск приложения и сервса
